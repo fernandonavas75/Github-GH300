@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GH-300 — GitHub Copilot Certification Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<script src="js/app.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">
+    <svg viewBox="0 0 24 24" fill="none" stroke="url(#navGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <defs><linearGradient id="navGrad" x1="0" y1="0" x2="24" y2="24"><stop offset="0%" stop-color="#58a6ff"/><stop offset="100%" stop-color="#bc8cff"/></linearGradient></defs>
+      <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+    </svg>
+    <span>GH-300</span>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showScreen('home')">Inicio</button>
+    <button class="nav-tab" onclick="showScreen('study')">Estudiar</button>
+    <button class="nav-tab" onclick="showScreen('cheat')">Cheat Sheet</button>
+    <button class="nav-tab" onclick="startQuiz()">Quiz</button>
+  </div>
+  <div class="nav-score" id="navScore"></div>
+</nav>
+<div class="mobile-tabs">
+  <button class="nav-tab active" onclick="showScreen('home')">Inicio</button>
+  <button class="nav-tab" onclick="showScreen('study')">Estudiar</button>
+  <button class="nav-tab" onclick="showScreen('cheat')">Cheat Sheet</button>
+  <button class="nav-tab" onclick="startQuiz()">Quiz</button>
+</div>
+
+<div class="main">
+
+<!-- HOME -->
+<div class="screen active" id="screen-home">
+  <div class="home-hero">
+    <h1>Prepárate para el<br><span class="gradient">GitHub Copilot GH-300</span></h1>
+    <p>Quiz interactivo, guía de estudio y cheat sheet — todo basado en tu material de preparación. 50 preguntas nuevas con trampas tipo examen real.</p>
+  </div>
+  <div class="domain-grid">
+    <div class="domain-card" onclick="startQuiz('responsible')">
+      <div class="weight">7% del examen</div>
+      <h3>IA Responsable y Ética</h3>
+      <p>6 principios de Microsoft, prevención de vulnerabilidades, supervisión humana.</p>
+      <div class="q-count">4 preguntas</div>
+    </div>
+    <div class="domain-card" onclick="startQuiz('planes')">
+      <div class="weight">31% del examen</div>
+      <h3>Planes y Funcionalidades</h3>
+      <p>Individual vs Business vs Enterprise, políticas, Knowledge Bases, Agent Mode.</p>
+      <div class="q-count">15 preguntas</div>
+    </div>
+    <div class="domain-card" onclick="startQuiz('arquitectura')">
+      <div class="weight">15% del examen</div>
+      <h3>Arquitectura y Datos</h3>
+      <p>Flujo Cliente-Proxy-LLM, Neighboring Tabs, FIM, retención de datos.</p>
+      <div class="q-count">8 preguntas</div>
+    </div>
+    <div class="domain-card" onclick="startQuiz('prompts')">
+      <div class="weight">9% del examen</div>
+      <h3>Ingeniería de Prompts</h3>
+      <p>Las 4 "S", Zero/Few-Shot, @workspace, #file, Chain of Thought.</p>
+      <div class="q-count">5 preguntas</div>
+    </div>
+    <div class="domain-card" onclick="startQuiz('casos')">
+      <div class="weight">14% del examen</div>
+      <h3>Casos de Uso</h3>
+      <p>Slash commands, CLI, refactorización, traducción de código.</p>
+      <div class="q-count">7 preguntas</div>
+    </div>
+    <div class="domain-card" onclick="startQuiz('testing')">
+      <div class="weight">9% del examen</div>
+      <h3>Testing</h3>
+      <p>/tests, TDD asistido, validación humana, Arrange-Act-Assert.</p>
+      <div class="q-count">4 preguntas</div>
+    </div>
+    <div class="domain-card" onclick="startQuiz('privacidad')">
+      <div class="weight">15% del examen</div>
+      <h3>Privacidad y Exclusiones</h3>
+      <p>Content Exclusion, IP Indemnity, filtros, precedencia de exclusiones.</p>
+      <div class="q-count">7 preguntas</div>
+    </div>
+  </div>
+  <div class="start-section">
+    <button class="btn btn-primary" onclick="startQuiz()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Iniciar Examen Completo (50 preguntas)
+    </button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="screen" id="screen-quiz">
+  <div class="quiz-container">
+    <div class="quiz-progress">
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar"></div></div>
+      <div class="progress-text" id="progressText">1/50</div>
+    </div>
+    <div id="quizDomainTag" class="quiz-domain-tag tag-planes"></div>
+    <div id="quizQuestion" class="quiz-question"></div>
+    <div id="quizOptions" class="quiz-options"></div>
+    <div id="quizFeedback" style="display:none;"></div>
+    <div class="quiz-actions">
+      <button class="btn btn-secondary btn-sm" id="btnSubmit" onclick="submitAnswer()" disabled>Confirmar Respuesta</button>
+      <button class="btn btn-primary btn-sm" id="btnNext" onclick="nextQuestion()" style="display:none;">
+        Siguiente →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- STUDY -->
+<div class="screen" id="screen-study">
+  <div class="study-container">
+    <div class="study-section">
+      <h2>Guía de Estudio Completa</h2>
+      <p class="subtitle">Todo el contenido organizado por dominio. Haz clic para expandir cada tema.</p>
+    </div>
+    <div class="accordion" id="studyAccordion"></div>
+  </div>
+</div>
+
+<!-- CHEAT SHEET -->
+<div class="screen" id="screen-cheat">
+  <div class="study-container">
+    <div class="study-section">
+      <h2>Cheat Sheet — Respuestas Flash</h2>
+      <p class="subtitle">Datos clave, mnemónicos y trampas frecuentes para memorizar antes del examen.</p>
+    </div>
+    <div class="cheat-grid" id="cheatGrid"></div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="screen" id="screen-results">
+  <div class="results-container">
+    <div class="results-circle">
+      <div class="pct" id="resultPct">0%</div>
+      <div class="label">Puntuación</div>
+    </div>
+    <div class="results-status" id="resultStatus"></div>
+    <div class="results-subtitle" id="resultSubtitle"></div>
+    <div class="results-domains" id="resultDomains"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="startQuiz()">Reintentar Examen</button>
+      <button class="btn btn-secondary" onclick="showScreen('study')">Revisar Estudio</button>
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
